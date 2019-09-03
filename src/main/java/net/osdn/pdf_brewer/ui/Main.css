@@ -1,0 +1,12 @@
+.root {
+	-fx-font-family: "Meiryo";
+	-fx-font-size: 12px;
+}
+
+FontIcon {
+	-fx-icon-size: 17;
+	-fx-icon-color: -fx-selection-bar;
+}
+.menu-item:focused FontIcon {
+	-fx-icon-color: -fx-selection-bar-text;
+}
