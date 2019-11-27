@@ -63,25 +63,4 @@ public class Util {
 			return String.format("%d.%d.%d", v[0], v[1]);
 		}
 	}
-	
-	
-	public static void closeSplashScreen() {
-		long SPLASH_TIME = 1500;
-		
-		SplashScreen splash = SplashScreen.getSplashScreen();
-		if(splash != null) {
-			long startup = 0;
-			String s = System.getProperty("java.application.startup");
-			if(s != null) {
-				try {
-					startup = LocalDateTime.parse(s).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-				} catch(DateTimeParseException e) {}
-			}
-			long elapsed = System.currentTimeMillis() - startup;
-			long delay = Math.max(SPLASH_TIME - elapsed, 1L);
-			new Timeline(new KeyFrame(Duration.millis(delay), onFinished -> {
-				splash.close();
-			})).play();
-		}
-	}
 }
