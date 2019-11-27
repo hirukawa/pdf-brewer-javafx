@@ -12,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.prefs.Preferences;
 
+import net.osdn.util.javafx.application.SingletonApplication;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javafx.application.Application;
@@ -41,12 +42,8 @@ import net.osdn.util.fx.pdf.Pager;
 import net.osdn.util.fx.pdf.PdfView;
 import net.osdn.util.fx.toast.Toast;
 
-public class Main extends Application implements Initializable {
+public class Main extends SingletonApplication implements Initializable {
 
-	private static AtomicInteger count = new AtomicInteger(0);
-	private static CountDownLatch latch = new CountDownLatch(1);
-	private static Main instance;
-	
 	static {
 		System.setProperty("org.apache.commons.logging.LogFactory", "net.osdn.util.LogFilter");
 		LogFilter.setLevel("org.apache.pdfbox", LogFilter.Level.ERROR);
@@ -54,27 +51,7 @@ public class Main extends Application implements Initializable {
 	}
 	
 	public static void main(String[] args) throws Throwable {
-		if(instance == null || instance.primaryStage == null) {
-			if(count.getAndIncrement() == 0) {
-				try {
-					launch(args);
-				} catch(Throwable t) {
-                    if(t.getCause() instanceof InvocationTargetException && t.getCause().getCause() != null) {
-                        throw t.getCause().getCause();
-                    } else {
-                        throw t;
-                    }
-				}
-				return;
-			}
-			latch.await();
-		}
-		Platform.runLater(() -> {
-			if(Main.instance.primaryStage.isIconified()) {
-				Main.instance.primaryStage.setIconified(false);
-			}
-			Main.instance.primaryStage.toFront();
-		});
+		launch(args);
 	}
 	
 	private static Preferences preferences = Preferences.userNodeForPackage(Main.class);
@@ -91,38 +68,23 @@ public class Main extends Application implements Initializable {
 		Image icon = new Image(getClass().getResourceAsStream("/img/app-icon-48px.png"));
 		primaryStage.getIcons().add(icon);
 		
-		title = (title + Util.getApplicationVersionShortString()).trim();
+		title = (title + " " + Util.getApplicationVersionShortString()).trim();
 		primaryStage.setTitle(title);
-
-		System.out.println("resource=" + getClass().getResource("Main.fxml"));
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 		loader.setController(this);
 		Parent root = (Parent)loader.load();
 		
 		Scene scene = new Scene(root);
-		scene.setOnDragOver(event -> { 
-			try {
-				onDragOver(event);
-			} catch(Throwable e) {
-				handler.uncaughtException(Thread.currentThread(), e);
-			}
-		});
-		scene.setOnDragDropped(event -> {
-			try { 
-				onDragDropped(event);
-			} catch(Throwable e) {
-				handler.uncaughtException(Thread.currentThread(), e);
-			}
-		});
+		scene.setOnDragOver(wrap(this::window_onDragOver));
+		scene.setOnDragDropped(wrap(this::window_onDragDropped));
 		scene.getAccelerators().putAll(pager.createDefaultAccelerators());
 		
 		primaryStage.setScene(scene);
 		primaryStage.setMinWidth(320);
 		primaryStage.setMinHeight(320);
 		primaryStage.show();
-		
-		Main.latch.countDown();
+
 		Thread.currentThread().setUncaughtExceptionHandler(handler);
 	}
 	
@@ -183,8 +145,6 @@ public class Main extends Application implements Initializable {
 				y = workarea.getMinY();
 			}
 			primaryStage.setY(y);
-			
-			Util.closeSplashScreen();
 		});
 		primaryStage.xProperty().addListener((observable, oldValue, newValue)-> {
 			preferences.putDouble("stageX", newValue.doubleValue());
@@ -295,7 +255,7 @@ public class Main extends Application implements Initializable {
 		return null;
 	}
 	
-	protected void onDragOver(DragEvent event) {
+	void window_onDragOver(DragEvent event) {
 		if(getDragAcceptable(event) != null) {
 			event.acceptTransferModes(TransferMode.COPY);
 		} else {
@@ -303,7 +263,7 @@ public class Main extends Application implements Initializable {
 		}
 	}
 	
-	protected void onDragDropped(DragEvent event) {
+	void window_onDragDropped(DragEvent event) {
 		Path path = getDragAcceptable(event);
 		if(path != null) {
 			primaryStage.toFront();

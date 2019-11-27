@@ -24,8 +24,8 @@ dependencies {
 
 	compile 'org.freemarker:freemarker:2.3.29'
 	
-	compile 'org.apache.pdfbox:pdfbox:2.0.16'
-	compile 'org.apache.pdfbox:fontbox:2.0.16'
+	compile 'org.apache.pdfbox:pdfbox:2.0.17'
+	compile 'org.apache.pdfbox:fontbox:2.0.17'
 		
 	compile 'org.kordamp.ikonli:ikonli-javafx:11.3.4'
 	compile 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.3.4'
@@ -61,7 +61,7 @@ task createJavaRuntime(type: Exec, dependsOn: ['jar', 'copyLibraries']) {
 	setGroup("build")
 	setDescription("Create Java Runtime.")
 	workingDir "${buildDir}/package/"
-	commandLine 'cmd', '/c', 'CreateJRE.bat', "${jar.archiveFile.get()}", "lib"
+	commandLine 'cmd', '/c', 'CreateJRE.bat', "${jar.archiveFile.get()}", "lib", "-client"
 }
 
 task exewrap_x64(type: Exec, dependsOn: 'jar') {
@@ -71,9 +71,9 @@ task exewrap_x64(type: Exec, dependsOn: 'jar') {
 	args "-A", "x64",
 		"-g",
 		"-t", "11",
-		"-a", "-XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -XX:CICompilerCount=1 -Xverify:none -Xms128m",
+		"-a", "-XX:TieredStopAtLevel=1 -XX:+UseSerialGC -XX:CICompilerCount=1 -Xverify:none -Xms128m",
 		"-e", "SHARED",
-		"-j", "${libsDir}/${jar.archiveName}",
+		"-j", "${jar.archiveFile.get()}",
 		"-i", "src/main/resources/ico/app-icon.ico",
 		"-o", "${buildDir}/package/${archivesBaseName}.exe",
 		"-p", "PDF BREWER",
