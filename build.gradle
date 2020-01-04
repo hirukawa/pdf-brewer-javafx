@@ -1,16 +1,12 @@
 apply plugin: 'java'
 
 archivesBaseName = 'pdf-brewer'
-version = '0.3'
+version = '0.4'
 
-def defaultEncoding = 'UTF-8'
-tasks.withType(AbstractCompile).each { it.options.encoding = defaultEncoding }
-tasks.withType(GroovyCompile).each { it.groovyOptions.encoding = defaultEncoding }
-
-sourceSets.main {
-	resources {
-		srcDirs = ['src/main/resources', 'src/main/java']
-	}
+tasks.withType(JavaCompile) {
+	sourceCompatibility = 11
+	targetCompatibility = 11
+	options.compilerArgs << '-Xlint:all'
 }
 
 repositories {
@@ -19,19 +15,27 @@ repositories {
 
 dependencies {
 	compile fileTree(dir: 'lib',
-		includes: ['**/*.jar'],
-		excludes: ['**/*-sources.jar', '**/*-javadoc.jar'])
+			includes: ['**/*.jar'],
+			excludes: ['**/*-sources.jar', '**/*-javadoc.jar'])
 
 	compile 'org.freemarker:freemarker:2.3.29'
-	
+
 	compile 'org.apache.pdfbox:pdfbox:2.0.17'
 	compile 'org.apache.pdfbox:fontbox:2.0.17'
-		
+
 	compile 'org.kordamp.ikonli:ikonli-javafx:11.3.4'
 	compile 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.3.4'
-	
+
 	compile 'net.osdn.util.io:auto-detect-reader:0.1.1'
 }
+
+sourceSets.main.resources {
+	srcDirs = ['src/main/resources', 'src/main/java' ]
+}
+
+def defaultEncoding = 'UTF-8'
+tasks.withType(AbstractCompile).each { it.options.encoding = defaultEncoding }
+tasks.withType(GroovyCompile).each { it.groovyOptions.encoding = defaultEncoding }
 
 defaultTasks 'clean', 'build', 'exewrap_x64'
 
@@ -40,9 +44,8 @@ jar {
 		attributes "Specification-Version": "${project.version}"
 		attributes "Main-Class" : "net.osdn.pdf_brewer.ui.Main"
 		attributes "Splashscreen-Image": "img/splash.png"
-		attributes "Class-Path": configurations.runtime.collect { "lib/$it.name" }.join(' ')
+		attributes "Class-Path": sourceSets.main.runtimeClasspath.collect { "lib/$it.name" }.join(' ')
 	}
-	exclude('img/*.psd', 'ico/**')
 }
 
 task copyLibraries(type: Copy) {
@@ -74,11 +77,11 @@ task exewrap_x64(type: Exec, dependsOn: 'jar') {
 		"-a", "-XX:TieredStopAtLevel=1 -XX:+UseSerialGC -XX:CICompilerCount=1 -Xverify:none -Xms128m",
 		"-e", "SHARED",
 		"-j", "${jar.archiveFile.get()}",
-		"-i", "src/main/resources/ico/app-icon.ico",
+		"-i", "etc/ico/app.ico",
 		"-o", "${buildDir}/package/${archivesBaseName}.exe",
 		"-p", "PDF BREWER",
 		"-d", "PDF BREWER",
-		"-c", "(C) 2017-2019 HIRUKAWA Ryo",
+		"-c", "(C) 2017-2020 HIRUKAWA Ryo",
 		"-V", "${version}",
 		"-v", "${version}"
 }
