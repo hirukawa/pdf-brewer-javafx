@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import net.osdn.util.fx.pdf.PdfView?>
-<?import net.osdn.util.fx.pdf.Pager?>
 <?import net.osdn.util.fx.toast.Toast?>
 
+<?import net.osdn.util.javafx.scene.control.pdf.Pager?>
+<?import net.osdn.util.javafx.scene.control.pdf.PdfView?>
 <StackPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
-	stylesheets="@Main.css">
+		   stylesheets="@Main.css">
 	
 	<BorderPane>
 		<top>
@@ -23,24 +20,21 @@
 								fx:id="menuFileOpen"
 								text="開く..."
 								mnemonicParsing="false"
-								accelerator="Shortcut+O"
-								onAction="#menuFileOpen_onAction">
+								accelerator="Shortcut+O">
 								<graphic><FontIcon iconLiteral="mdi-folder"/></graphic>
 							</MenuItem>
 							<MenuItem
 								fx:id="menuFileSave"
 								text="名前を付けて保存..."
 								mnemonicParsing="false"
-								accelerator="Shortcut+S"
-								onAction="#menuFileSave_onAction">
+								accelerator="Shortcut+S">
 								<graphic><FontIcon iconLiteral="mdi-content-save"/></graphic>
 							</MenuItem>
 							<SeparatorMenuItem/>
 							<MenuItem
 								fx:id="menuFileExit"
 								text="終了"
-								mnemonicParsing="false"
-								onAction="#menuFileExit_onAction">
+								mnemonicParsing="false">
 							</MenuItem>
 						</items>
 					</Menu>

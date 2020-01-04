@@ -1,4 +1,4 @@
-package net.osdn.util;
+package net.osdn.pdf_brewer.ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +105,7 @@ public class LogFilter extends LogFactory {
 		private boolean isErrorEnabled;
 		private boolean isFatalEnabled;
 
+		@SuppressWarnings("fallthrough")
 		public Wrapper(Log impl, Level level) {
 			this.impl = impl;
 

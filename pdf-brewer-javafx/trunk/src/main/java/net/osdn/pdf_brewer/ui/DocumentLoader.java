@@ -78,7 +78,7 @@ public class DocumentLoader implements Callable<PDDocument> {
 	}
 	
 	protected Template getTemplate(String name) throws IOException {
-		Path path = Util.getApplicationPath(getClass());
+		Path path = Datastore.getApplicationDirectory();
 		while(path != null) {
 			Path t = path.resolve("templates");
 			if(Files.isDirectory(t)) {
