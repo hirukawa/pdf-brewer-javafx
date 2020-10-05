@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 archivesBaseName = 'pdf-brewer'
-version = '0.4.2'
+version = '0.4.3'
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = 11
@@ -20,8 +20,8 @@ dependencies {
 
 	implementation 'org.freemarker:freemarker:2.3.30'
 
-	implementation 'org.apache.pdfbox:pdfbox:2.0.20'
-	implementation 'org.apache.pdfbox:fontbox:2.0.20'
+	implementation 'org.apache.pdfbox:pdfbox:2.0.21'
+	implementation 'org.apache.pdfbox:fontbox:2.0.21'
 
 	implementation 'org.kordamp.ikonli:ikonli-javafx:11.5.0'
 	implementation 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.5.0'

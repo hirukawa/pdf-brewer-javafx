@@ -30,6 +30,10 @@ public class DocumentLoader implements Callable<PDDocument> {
 
 	@Override
 	public PDDocument call() throws Exception {
+		if(isPdf(input)) {
+			return PDDocument.load(Files.readAllBytes(input));
+		}
+
 		PdfBrewer brewer = new PdfBrewer();
 		BrewerData pb;
 		
@@ -46,7 +50,11 @@ public class DocumentLoader implements Callable<PDDocument> {
 		brewer.save(out);
 		return PDDocument.load(out.toByteArray());
 	}
-	
+
+	protected boolean isPdf(Path input) {
+		return input.getFileName().toString().toLowerCase().endsWith(".pdf");
+	}
+
 	protected boolean isYaml(Path input) {
 		return input.getFileName().toString().toLowerCase().endsWith(".yml");
 	}

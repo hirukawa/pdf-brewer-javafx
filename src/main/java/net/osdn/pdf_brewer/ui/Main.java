@@ -164,7 +164,7 @@ public class Main extends SingletonApplication implements Initializable {
 	}
 
 	protected boolean isAcceptable(File file) {
-		return file != null && file.getName().matches("(?i).+(\\.yml|\\.yaml|\\.pb)");
+		return file != null && file.getName().matches("(?i).+(\\.pdf|\\.yml|\\.yaml|\\.pb)");
 	}
 
 	void scene_onDragOver(DragEvent event) {
@@ -194,7 +194,9 @@ public class Main extends SingletonApplication implements Initializable {
 
 		FileChooser fc = new FileChooser();
 		fc.setTitle("開く");
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Brewer", "*.pb"));
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("YAML", "*.yml", ".yaml"));
 
 		String lastOpenDirectory = preferences.get("lastOpenDirectory", null);
 		if(lastOpenDirectory != null) {
