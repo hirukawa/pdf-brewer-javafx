@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 archivesBaseName = 'pdf-brewer'
-version = '0.4.3'
+version = '0.4.4'
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = 11
@@ -27,7 +27,7 @@ dependencies {
 	implementation 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.5.0'
 
 	implementation 'net.osdn.util.io:auto-detect-reader:0.1.1'
-	implementation 'com.esotericsoftware.yamlbeans:yamlbeans:1.14'
+	implementation 'com.esotericsoftware.yamlbeans:yamlbeans:1.15'
 }
 
 sourceSets.main.resources {
