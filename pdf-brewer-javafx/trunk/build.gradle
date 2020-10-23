@@ -65,7 +65,7 @@ task createJavaRuntime(type: Exec, dependsOn: ['jar', 'copyLibraries']) {
 	setGroup("build")
 	setDescription("Create Java Runtime.")
 	workingDir "${buildDir}/package/"
-	commandLine 'cmd', '/c', 'CreateJRE.bat', "${jar.archiveFile.get()}", "lib", "-client"
+	commandLine 'cmd', '/c', 'CreateJRE.bat', "${jar.archiveFile.get()}", "lib", "-server"
 }
 
 task exewrap(type: Exec, dependsOn: 'jar') {
@@ -75,7 +75,7 @@ task exewrap(type: Exec, dependsOn: 'jar') {
 	args "-A", "x64",
 		"-g",
 		"-t", "11",
-		"-a", "-XX:TieredStopAtLevel=1 -XX:+UseSerialGC -XX:CICompilerCount=1 -Xverify:none -Xms128m",
+		"-a", "-Xms128m -Xmx1024m",
 		"-e", "SHARED",
 		"-j", "${jar.archiveFile.get()}",
 		"-i", "etc/ico/app.ico",
