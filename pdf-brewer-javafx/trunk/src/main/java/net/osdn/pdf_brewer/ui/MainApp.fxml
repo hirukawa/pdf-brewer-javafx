@@ -7,8 +7,11 @@
 
 <?import net.osdn.util.javafx.scene.control.pdf.Pager?>
 <?import net.osdn.util.javafx.scene.control.pdf.PdfView?>
-<StackPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
-		   stylesheets="@Main.css">
+
+<StackPane
+    xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+	stylesheets="@MainApp.css">
 	
 	<BorderPane>
 		<top>

@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 archivesBaseName = 'pdf-brewer'
-version = '0.4.4'
+version = '0.4.5'
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = 11
